@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mèo Đen Config</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
+        body { background: #0b0e14; color: #e0e5ec; padding: 20px; max-width: 480px; margin: auto; }
+        h1 { font-size: 28px; color: #00d4ff; display: flex; align-items: center; gap: 10px; }
+        .sub { color: #8a9bb5; margin-bottom: 20px; font-size: 14px; }
+        .card { background: #141b26; border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid #2a3647; }
+        .switch { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1f2a38; }
+        .switch:last-child { border-bottom: none; }
+        .toggle { width: 50px; height: 30px; background: #2a3647; border-radius: 15px; position: relative; cursor: pointer; transition: 0.2s; }
+        .toggle.active { background: #00d4ff; }
+        .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; background: #fff; border-radius: 50%; transition: 0.2s; }
+        .toggle.active::after { left: 23px; }
+        .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; text-align: center; cursor: pointer; color: #fff; }
+        .btn-primary { background: linear-gradient(135deg, #00b4d8, #0077b6); }
+        .btn-secondary { background: #2a3647; color: #e0e5ec; }
+        .btn-danger { background: linear-gradient(135deg, #e63946, #c1121f); }
+        .status { padding: 12px; background: #1a2332; border-radius: 10px; font-size: 14px; margin-top: 10px; }
+        .offset-box { background: #0b0e14; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; white-space: pre-wrap; max-height: 200px; overflow-y: auto; border: 1px solid #2a3647; margin-top: 10px; display: none; }
+        .badge { background: #00d4ff20; color: #00d4ff; padding: 2px 10px; border-radius: 12px; font-size: 11px; }
+        .footer { text-align: center; font-size: 12px; color: #5a6b82; margin-top: 20px; border-top: 1px solid #1f2a38; padding-top: 16px; }
+        @media (prefers-color-scheme: light) {
+            body { background: #f0f4fa; color: #1a2332; }
+            .card { background: #fff; border-color: #d0d8e4; }
+            .switch { border-bottom-color: #e8ecf2; }
+            .toggle { background: #d0d8e4; }
+            .btn-secondary { background: #d0d8e4; color: #1a2332; }
+            .status { background: #e8ecf2; }
+            .offset-box { background: #f0f4fa; border-color: #d0d8e4; }
+            .footer { border-top-color: #d0d8e4; color: #6a7a8a; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🐈‍⬛ Mèo Đen</h1>
+    <div class="sub">Free Fire Config • v6.0</div>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-weight: 600;">Tính năng</span>
+            <span class="badge">Bật/Tắt</span>
+        </div>
+        <div class="switch"><label>🎯 Aimlock</label><div class="toggle" onclick="toggle(this)"></div></div>
+        <div class="switch"><label>📳 Fix Rung</label><div class="toggle" onclick="toggle(this)"></div></div>
+        <div class="switch"><label>🔄 Kéo Tâm</label><div class="toggle" onclick="toggle(this)"></div></div>
+        <div class="switch"><label>🛡️ Anti Ban</label><div class="toggle" onclick="toggle(this)"></div></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="installProfile()">📲 Cài Profile</button>
+    <button class="btn btn-secondary" onclick="showOffset()">🔍 Xem Offset</button>
+    <button class="btn btn-danger" onclick="resetAll()">🔄 Reset</button>
+
+    <div id="status" class="status">⛔ Chưa bật tính năng nào</div>
+    <div id="offsetDisplay" class="offset-box"></div>
+
+    <div class="footer">Mèo Đen • Chỉ dùng cho mục đích học tập</div>
+
+    <script>
+        let settings = JSON.parse(localStorage.getItem('meoden') || '{}');
+        document.querySelectorAll('.toggle').forEach(el => {
+            const key = el.parentElement.innerText.trim().split(' ')[1];
+            if (settings[key]) el.classList.add('active');
+        });
+        updateStatus();
+
+        function toggle(el) {
+            const key = el.parentElement.innerText.trim().split(' ')[1];
+            settings[key] = !settings[key];
+            el.classList.toggle('active');
+            localStorage.setItem('meoden', JSON.stringify(settings));
+            updateStatus();
+        }
+
+        function updateStatus() {
+            const enabled = Object.keys(settings).filter(k => settings[k]);
+            document.getElementById('status').textContent = enabled.length ? '✅ Đã bật: ' + enabled.join(', ') : '⛔ Chưa bật tính năng nào';
+        }
+
+        function installProfile() {
+            const enabled = Object.keys(settings).filter(k => settings[k]);
+            const desc = enabled.length ? 'Đã bật: ' + enabled.join(', ') : 'Chưa bật tính năng nào';
+            const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadIdentifier</key><string>com.meoden.config</string>
+    <key>PayloadUUID</key><string>12345678-1234-1234-1234-123456789abc</string>
+    <key>PayloadType</key><string>Configuration</string>
+    <key>PayloadVersion</key><integer>1</integer>
+    <key>PayloadDisplayName</key><string>🐈‍⬛ Mèo Đen</string>
+    <key>PayloadDescription</key><string>${desc}</string>
+    <key>PayloadOrganization</key><string>MeoDen</string>
+    <key>PayloadRemovalDisallowed</key><true/>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>PayloadType</key><string>com.apple.webClip.managed</string>
+            <key>PayloadVersion</key><integer>1</integer>
+            <key>PayloadIdentifier</key><string>com.meoden.webclip</string>
+            <key>PayloadUUID</key><string>12345678-1234-1234-1234-123456789abd</string>
+            <key>URL</key><string>https://meoden.github.io</string>
+            <key>Label</key><string>🐈‍⬛ Mèo Đen</string>
+            <key>FullScreen</key><true/>
+        </dict>
+    </array>
+</dict>
+</plist>`;
+            const blob = new Blob([xml], { type: 'application/x-apple-aspen-config' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'meoden.mobileconfig';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            document.getElementById('status').textContent = '✅ Đã tạo profile! Mở file để cài.';
+        }
+
+        function showOffset() {
+            const box = document.getElementById('offsetDisplay');
+            if (box.style.display === 'block') { box.style.display = 'none'; return; }
+            box.textContent = `// === OFFSET từ Aimlock more v3.json ===
+const OFFSET_LOCAL_PLAYER = 0x0;   // Cần dump
+const OFFSET_ENTITY_LIST = 0x0;    // Cần dump
+const OFFSET_HEALTH = 0x0;         // Cần dump
+const OFFSET_TEAM_ID = 0x0;        // Cần dump
+const OFFSET_IS_KNOCK = 0x0;       // Cần dump
+const OFFSET_POSITION = 0x0;       // Cần dump
+const OFFSET_VIEW_ANGLE = 0x0;     // Cần dump
+AIM_FOV = 60.0f
+AIM_SMOOTH = 5.0f
+MAX_DISTANCE = 200.0f
+// Lưu ý: Offset thực tế phụ thuộc vào phiên bản game.`;
+            box.style.display = 'block';
+        }
+
+        function resetAll() {
+            if (confirm('Reset tất cả cài đặt?')) {
+                localStorage.removeItem('meoden');
+                settings = {};
+                document.querySelectorAll('.toggle').forEach(el => el.classList.remove('active'));
+                updateStatus();
+                document.getElementById('offsetDisplay').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
