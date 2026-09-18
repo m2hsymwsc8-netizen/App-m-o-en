@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadDisplayName</key>
+    <string>NovaX NextDNS (2a91bf)</string>
+    <key>PayloadDescription</key>
+    <string>Cấu hình bảo vệ NextDNS mã hóa DoH chuẩn Apple cho NovaX</string>
+    <key>PayloadIdentifier</key>
+    <string>io.nextdns.2a91bf.profile</string>
+    <key>PayloadScope</key>
+    <string>System</string>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>628D0169-2A5C-417D-B2FD-66BC6EDBE1D9</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>DNSSettings</key>
+            <dict>
+                <key>DNSProtocol</key>
+                <string>HTTPS</string>
+                <key>ServerURL</key>
+                <string>https://apple.dns.nextdns.io/2a91bf</string>
+                <key>ServerAddresses</key>
+                <array>
+                    <string>45.90.28.0</string>
+                    <string>2a07:a8c0::</string>
+                    <string>45.90.30.0</string>
+                    <string>2a07:a8c1::</string>
+                </array>
+            </dict>
+            <key>OnDemandRules</key>
+            <array>
+                <dict>
+                    <key>Action</key>
+                    <string>EvaluateConnection</string>
+                    <key>ActionParameters</key>
+                    <array>
+                        <dict>
+                            <key>DomainAction</key>
+                            <string>NeverConnect</string>
+                            <key>Domains</key>
+                            <array>
+                                <string>captive.apple.com</string>
+                                <string>3gppnetwork.org</string>
+                                <string>dav.orange.fr</string>
+                                <string>vvm.mobistar.be</string>
+                                <string>vvm.mstore.msg.t-mobile.com</string>
+                                <string>tma.vvm.mone.pan-net.eu</string>
+                                <string>vvm.ee.co.uk</string>
+                            </array>
+                        </dict>
+                    </array>
+                </dict>
+                <dict>
+                    <key>Action</key>
+                    <string>Connect</string>
+                </dict>
+            </array>
+            <key>PayloadType</key>
+            <string>com.apple.dnsSettings.managed</string>
+            <key>PayloadIdentifier</key>
+            <string>io.nextdns.2a91bf.profile.dnsSettings.managed</string>
+            <key>PayloadUUID</key>
+            <string>BCB1C120-9F7B-4653-96FF-A13C6BBFED2B</string>
+            <key>PayloadDisplayName</key>
+            <string>NovaX NextDNS (2a91bf)</string>
+            <key>PayloadOrganization</key>
+            <string>NovaX NextDNS Enterprise</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+    </array>
+</dict>
+</plist>
